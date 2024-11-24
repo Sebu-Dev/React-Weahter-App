@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FaLocationArrow } from 'react-icons/fa'; // Standort-Icon
+import { FaLocationArrow } from 'react-icons/fa';
 import { getCityFromCoordinates } from '../services/locationService';
 
 interface SearchBarProps {
@@ -31,10 +31,9 @@ const SearchBar: React.FC<SearchBarProps> = ({
             });
 
             const { latitude, longitude } = position.coords;
-            // Beispiel-Funktion, um aus Koordinaten die Stadt zu ermitteln
             const city = await getCityFromCoordinates(latitude, longitude);
-            setCity(city); // Setzt die Stadt
-            setInputCity(city); // Setzt das Eingabefeld
+            setCity(city);
+            setInputCity(city);
         } catch (error) {
             setLocationDenied(true);
 

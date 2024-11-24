@@ -1,5 +1,5 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
-import Slider from 'react-slick'; // react-slick installieren
+import Slider from 'react-slick';
 
 const SwipeForecast = ({ forecast }) => {
     const settings = {

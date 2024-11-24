@@ -1,4 +1,3 @@
-// src/services/weatherService.ts
 import axios from 'axios';
 
 const API_KEY = '054a1f4685fe0574192d707a41260b68';
