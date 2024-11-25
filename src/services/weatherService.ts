@@ -1,7 +1,20 @@
 import axios from 'axios';
 
-const API_KEY = '';
-const BASE_URL = '';
+
+
+
+
+
+const BASE_URL = 'https://api.openweathermap.org/data/2.5/';
+
+
+const API_KEY = import.meta.env.VITE_OPENWEATHER_API_KEY;
+
+console.log(API_KEY);
+if (!API_KEY) {
+    throw new Error("OPENWEATHER_API_KEY ist nicht definiert!");
+}
+
 
 export const getWeatherData = async (city: string) => {
     try {
@@ -9,7 +22,7 @@ export const getWeatherData = async (city: string) => {
         console.log(response);
         return response.data;
     } catch (error) {
-        console.error('loading weatherdata faild:', error);
+        console.error('Fehler beim Laden der Wetterdaten:', error);
         throw error;
     }
 };

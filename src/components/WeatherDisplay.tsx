@@ -66,7 +66,7 @@ const WeatherDisplay: React.FC<WeatherProps> = ({
 
 
     return (
-        <div className="card mb-4 shadow, card-transparent">
+        <div className="card mb-4 shadow  ">
             {/* Die Wettervorhersage für die nächsten 5 Tage */}
             <WeatherForecastNav onDaySelect={handleDaySelect} />
 
