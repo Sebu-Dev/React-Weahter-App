@@ -61,46 +61,44 @@ const WeatherDisplay: React.FC<WeatherProps> = ({
     };
 
     return (
-        <div className="card mb-4 shadow ">
+        <div className="card mb-4 shadow">
             <div className="mt-4">
                 <h2 className="text-center">{city}</h2>
-                <p>{formatDate(date)}</p>
+                <p className="text-center">{formatDate(date)}</p>
                 <div className="table-responsive">
                     <table className="table table-striped">
                         <thead>
                             <tr>
-                                <th>Temperature</th>
-                                <th>Wind </th>
-                                <th>Humidity</th>
+                                <th className="text-center">Temperature</th>
+                                <th className="text-center">Wind</th>
+                                <th className="text-center">Humidity</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                <td>
-                                    <div className="d-flex flex-column align-items-center">
-                                        <div>{getWeatherIcon(weather)}</div>
-                                        <span>{temperature.toFixed(1)}°C</span>
+                                <td className="text-center">
+                                    <div>
+                                        {getWeatherIcon(weather)}
                                     </div>
+                                    <span>{temperature.toFixed(1)}°C</span>
                                 </td>
-                                <td>
-                                    <div className="d-flex flex-column align-items-center">
+                                <td className="text-center">
+                                    <div>
                                         <WiStrongWind size={40} title="Wind Speed" />
-                                        <span>{wind.toFixed(1)} km/h</span>
                                     </div>
+                                    <span>{wind.toFixed(1)} km/h</span>
                                 </td>
-                                <td>
-                                    <div className="d-flex flex-column align-items-center">
+                                <td className="text-center">
+                                    <div>
                                         <WiHumidity size={40} title="Humidity" />
-                                        <span>{humidity}%</span>
                                     </div>
+                                    <span>{humidity}%</span>
                                 </td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
             </div>
-
-
         </div>
     );
 };

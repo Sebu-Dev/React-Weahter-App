@@ -1,30 +1,32 @@
 import React, { useEffect, useState } from 'react';
 import ForecastSummary from './components/ForecastSummary';
-import SearchBar from './components/SearchBar.tsx';
-import { WeatherBackground } from './components/WeatherBackground.tsx';
+import SearchBar from './components/SearchBar';
+import { WeatherBackground } from './components/WeatherBackground';
 import WeatherDisplay from './components/WeatherDisplay';
 import { getCityFromCoordinates } from './services/locationService';
-import { getForecastData, getWeatherData } from './services/weatherService';
+import { getForecastData } from './services/weatherService';
+import { DailyWeather, WeatherData } from './types/WeatherForcastType';
 
 const App: React.FC = () => {
-  const [weatherData, setWeatherData] = useState<any>(null);
-  const [forecastData, setForecastData] = useState<any[]>([]);
+  const [forecastData, setForecastData] = useState<DailyWeather[]>([]);
   const [city, setCity] = useState<string>('Berlin');
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>('');
   const [inputCity, setInputCity] = useState<string>('');
-  const [selectedForecast, setSelectedForecast] = useState<any>(null);
+  const [selectedDay, setSelectedDay] = useState<DailyWeather | null>(null);
+  const [selectedForecast, setSelectedForecast] = useState<WeatherData | null>(null);
 
+  // Wählt die Tagesvorhersage aus
   const handleDaySelect = (dayIndex: number) => {
-    const forecastForDay = forecastData[dayIndex];
-    setSelectedForecast(forecastForDay);
-    console.log(selectedForecast)
+    const dayForecast = forecastData[dayIndex];
+    setSelectedDay(dayForecast);
+    setSelectedForecast(dayForecast.forecasts[0]); // Wählt die erste Vorhersage des Tages
   };
 
   const getCurrentPosition = (): Promise<{ lat: number; lon: number }> => {
     return new Promise((resolve, reject) => {
       if (!navigator.geolocation) {
-        reject(new Error("Geolocation is not supported by your browser"));
+        reject(new Error('Geolocation is not supported by your browser'));
       } else {
         navigator.geolocation.getCurrentPosition(
           (position) => {
@@ -43,62 +45,46 @@ const App: React.FC = () => {
   const handleSearch = () => {
     setCity(inputCity.trim());
   };
-  // Hole die 5-Tages-Vorhersage
+
+
   useEffect(() => {
     const fetchForecast = async () => {
+      setLoading(true);
+      setError('');
       try {
         const forecast = await getForecastData(city);
-        setForecastData(forecast.list);
-        setSelectedForecast(forecast.list[0]);
+        setForecastData(forecast);
+        setSelectedDay(forecast[0]);
+        setSelectedForecast(forecast[0].forecasts[0]);
       } catch (error) {
         setError('Error fetching forecast data.');
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchForecast();
   }, [city]);
-  //Hole die aktuelle Position
+
+  // Hole die aktuelle Position und setze die Stadt
   useEffect(() => {
     const fetchUserLocation = async () => {
       try {
         const { lat, lon } = await getCurrentPosition();
         const userCity = await getCityFromCoordinates(lat, lon);
         setCity(userCity);
-
-        const weather = await getWeatherData(userCity);
-        setWeatherData(weather);
       } catch (error) {
-        console.error("Error fetching location or weather data", error);
+        console.error('Error fetching location or weather data', error);
       }
     };
 
     fetchUserLocation();
   }, []);
-  //Hole Weatherdatas
-  useEffect(() => {
-    const fetchWeather = async () => {
-      setLoading(true);
-      setError('');
-      try {
-        const data = await getWeatherData(city);
-        setWeatherData(data);
-        setCity(data.name)
 
-        const forecast = await getForecastData(city);
-        setForecastData(forecast.list);
-      } catch (error) {
-        setError('Error fetching weather data.');
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchWeather();
-  }, [city]);
   return (
     <div style={{ position: 'relative' }}>
-      {weatherData && (
-        <WeatherBackground weather={weatherData.weather[0].main} />
+      {selectedForecast && (
+        <WeatherBackground weather={selectedForecast.weatherDescription} />
       )}
 
       <div style={{ position: 'relative', zIndex: 1 }}>
@@ -107,36 +93,37 @@ const App: React.FC = () => {
 
           <h1 className="text-center mb-4 white-text">Weather App</h1>
 
-          {/* Search bar as a component */}
+          {/* Suchleiste */}
           <SearchBar
             inputCity={inputCity}
             setInputCity={setInputCity}
             handleSearch={handleSearch}
             setCity={setCity}
-
-
           />
 
-          {/* Loading and Error handling */}
+          {/* Lade- und Fehlermeldungen */}
           {loading && <p className="text-center">Loading weather data...</p>}
           {error && <p className="text-center text-danger">{error}</p>}
 
-          {/* Weather display */}
-          {weatherData && !loading && !error && (
+          {/* Wetteranzeige */}
+          {selectedForecast && !loading && !error && (
             <WeatherDisplay
               city={city}
-              temperature={selectedForecast.main.temp}
-              weather={selectedForecast.weather[0].main}
-              wind={selectedForecast.wind.speed}
-              humidity={selectedForecast.main.humidity}
-              date={selectedForecast.dt}
+              temperature={selectedForecast.temperatureMax}
+              weather={selectedForecast.weatherDescription}
+              wind={selectedForecast.windSpeed}
+              humidity={selectedForecast.humidity}
+              date={selectedDay?.date || ''}
               handleDaySelect={handleDaySelect}
             />
           )}
 
-          {/* Forecast */}
+          {/* Vorhersagezusammenfassung */}
           {forecastData.length > 0 && (
-            <ForecastSummary forecast={forecastData} />
+            <ForecastSummary
+              forecast={forecastData}
+              handleDaySelect={handleDaySelect}
+            />
           )}
         </div>
       </div>
