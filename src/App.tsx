@@ -48,8 +48,8 @@ const App: React.FC = () => {
     const fetchForecast = async () => {
       try {
         const forecast = await getForecastData(city);
-        setForecastData(forecast.list); // Speichern der gesamten Vorhersage-Daten
-        setSelectedForecast(forecast.list[0]); // Standardmäßig den ersten Tag auswählen (heute)
+        setForecastData(forecast.list);
+        setSelectedForecast(forecast.list[0]);
       } catch (error) {
         setError('Error fetching forecast data.');
       }
