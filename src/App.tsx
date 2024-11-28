@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import ForecastSummary from './components/ForecastSummary';
 import SearchBar from './components/SearchBar';
 import { WeatherBackground } from './components/WeatherBackground';
 import WeatherDisplay from './components/WeatherDisplay';
@@ -108,23 +107,20 @@ const App: React.FC = () => {
           {/* Wetteranzeige */}
           {selectedForecast && !loading && !error && (
             <WeatherDisplay
-              city={city}
-              temperature={selectedForecast.temperatureMax}
-              weather={selectedForecast.weatherDescription}
-              wind={selectedForecast.windSpeed}
-              humidity={selectedForecast.humidity}
-              date={selectedDay?.date || ''}
+
+              weatherData={selectedForecast}
               handleDaySelect={handleDaySelect}
             />
           )}
 
           {/* Vorhersagezusammenfassung */}
-          {forecastData.length > 0 && (
-            <ForecastSummary
+          {/* {forecastData.length > 0 && (
+            <
+              ForecastSummary
               forecast={forecastData}
               handleDaySelect={handleDaySelect}
             />
-          )}
+          )} */}
         </div>
       </div>
     </div>

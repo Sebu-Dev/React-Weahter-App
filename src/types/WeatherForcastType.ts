@@ -39,17 +39,19 @@ export interface WeatherForecast {
 }
 
 export type WeatherData = {
-    temperatureMin: number; // Temperatur Minimum
-    temperatureMax: number; // Temperatur Maximum
-    rainProbability: number; // Regenwahrscheinlichkeit (%)
-    rainVolume: number; // Regenmenge (Liter pro Quadratmeter)
-    humidity: number; // Luftfeuchtigkeit (%)
-    weatherDescription: string; // Beschreibung des Wetters (z. B. "leicht bewölkt")
-    windSpeed: number; // Windgeschwindigkeit (km/h)
-    windDirection: string; // Windrichtung (z. B. "Nordwest")
+    time: string;
+    city: string;
+    temperatureMin: number;
+    temperatureMax: number;
+    rainProbability: number;
+    rainVolume: number;
+    humidity: number;
+    weatherDescription: string;
+    windSpeed: number;
+    windDirection: string;
 };
 
 export type DailyWeather = {
-    date: string; // Datum des Tages
+    date: string;
     forecasts: WeatherData[]; // Vorhersagen in 3-Stunden-Schritten
 };

@@ -9,44 +9,40 @@ import {
     WiStrongWind,
     WiThunderstorm,
 } from "react-icons/wi";
+import type { WeatherData } from "../types/WeatherForcastType";
 
 interface WeatherProps {
-    city: string;
-    temperature: number;
-    weather: string;
-    wind: number;
-    humidity: number;
-    date: number;
+    weatherData: WeatherData;
     handleDaySelect: (day: number) => void;
 }
 
 const WeatherDisplay: React.FC<WeatherProps> = ({
-    city,
-    temperature,
-    weather,
-    wind,
-    humidity,
-    date,
+    weatherData,
     handleDaySelect,
 }) => {
-    const formatDate = (timestamp: number) => {
-        if (!timestamp) return "Invalid Date";
-        const options: Intl.DateTimeFormatOptions = {
-            weekday: "short",
-            day: "numeric",
-            month: "short",
-        };
-        return new Date(timestamp * 1000).toLocaleDateString("en-US", options);
-    };
+    const {
+        city,
+        time,
+        humidity,
+        temperatureMin: tempMin,
+        temperatureMax: tempMax,
+        windSpeed: wind,
+        rainProbability,
+        rainVolume,
+        weatherDescription,
+    } = weatherData;
 
     // Funktion, um das passende Icon basierend auf dem Wetter auszuwählen
     const getWeatherIcon = (condition: string) => {
+
         switch (condition) {
             case "Clear":
                 return <WiDaySunny size={40} title="Clear Sky" />;
             case "Clouds":
                 return <WiCloudy size={40} title="Cloudy" />;
             case "Rain":
+                return <WiRain size={40} title="Rainy" />;
+            case "light rain":
                 return <WiRain size={40} title="Rainy" />;
             case "Thunderstorm":
                 return <WiThunderstorm size={40} title="Thunderstorm" />;
@@ -56,51 +52,53 @@ const WeatherDisplay: React.FC<WeatherProps> = ({
             case "Fog":
                 return <WiFog size={40} title="Foggy" />;
             default:
-                return <WiStrongWind size={40} title="Windy" />;
+                return <div></div>;
         }
     };
 
     return (
+
         <div className="card mb-4 shadow">
-            <div className="mt-4">
-                <h2 className="text-center">{city}</h2>
-                <p className="text-center">{formatDate(date)}</p>
-                <div className="table-responsive">
-                    <table className="table table-striped">
-                        <thead>
-                            <tr>
-                                <th className="text-center">Temperature</th>
-                                <th className="text-center">Wind</th>
-                                <th className="text-center">Humidity</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td className="text-center">
-                                    <div>
-                                        {getWeatherIcon(weather)}
-                                    </div>
-                                    <span>{temperature.toFixed(1)}°C</span>
-                                </td>
-                                <td className="text-center">
-                                    <div>
-                                        <WiStrongWind size={40} title="Wind Speed" />
-                                    </div>
-                                    <span>{wind.toFixed(1)} km/h</span>
-                                </td>
-                                <td className="text-center">
-                                    <div>
-                                        <WiHumidity size={40} title="Humidity" />
-                                    </div>
-                                    <span>{humidity}%</span>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+            <div className="card-body">
+                <h2 className="text-center mb-3">{city}</h2>
+                <p className="text-center text-muted">{time}</p>
+                <div className="d-flex justify-content-around align-items-center mb-4">
+                    <div className="text-center">
+                        <div>{getWeatherIcon(weatherDescription)}</div>
+                        <p className="mt-2">{weatherDescription}</p>
+                    </div>
+                    <div className="text-center">
+                        <h4>{tempMin.toFixed(1)}°C - {tempMax.toFixed(1)}°C</h4>
+
+                    </div>
+                </div>
+                <div className="row text-center">
+                    <div className="col">
+                        <WiStrongWind size={40} className="mb-2" />
+                        <p>{wind.toFixed(1)} km/h</p>
+
+                    </div>
+                    <div className="col">
+                        <WiRain size={40} className="mb-2" />
+                        <p>{rainProbability}%</p>
+
+                    </div>
+                    <div className="col">
+                        <WiRain size={40} className="mb-2" />
+                        <p>{rainVolume.toFixed(1)} mm</p>
+
+                    </div>
+                    <div className="col">
+                        <WiHumidity size={40} className="mb-2" />
+                        <p>{humidity}%</p>
+
+                    </div>
                 </div>
             </div>
         </div>
     );
+
+
 };
 
 export default WeatherDisplay;

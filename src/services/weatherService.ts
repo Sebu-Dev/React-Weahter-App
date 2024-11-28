@@ -16,13 +16,14 @@ const getWindDirection = (deg: number): string => {
 
 export const transformWeatherData = (forecast: WeatherForecast): DailyWeather[] => {
     const groupedData: { [date: string]: WeatherData[] } = {};
-
-
+    const cityName = forecast.city.name;
     forecast.list.forEach((entry) => {
         const date = entry.dt_txt.split(" ")[0];
         if (!groupedData[date]) groupedData[date] = [];
 
         groupedData[date].push({
+            time: entry.dt_txt,
+            city: cityName,
             temperatureMin: entry.main.temp_min,
             temperatureMax: entry.main.temp_max,
             rainProbability: entry.weather[0].main === "Rain" ? 80 : 10,
@@ -48,7 +49,7 @@ export const getForecastData = async (city: string): Promise<DailyWeather[]> => 
             appid: API_KEY,
         },
     });
-
+    console.log(response.data);
     console.log(transformWeatherData(response.data));
     return transformWeatherData(response.data);
 };
