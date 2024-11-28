@@ -49,7 +49,7 @@ export const getForecastData = async (city: string): Promise<DailyWeather[]> => 
             appid: API_KEY,
         },
     });
-    console.log(response.data);
+
     console.log(transformWeatherData(response.data));
     return transformWeatherData(response.data);
 };
