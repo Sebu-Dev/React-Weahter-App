@@ -58,7 +58,7 @@ const WeatherDisplay: React.FC<WeatherProps> = ({
 
     return (
 
-        <div className="card mb-4 shadow">
+        <div className="card mb-4 shadow " style={{ maxWidth: '500px' }}>
             <div className="card-body">
                 <h2 className="text-center mb-3">{city}</h2>
                 <p className="text-center text-muted">{time}</p>

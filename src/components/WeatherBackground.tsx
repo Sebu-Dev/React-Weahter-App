@@ -42,3 +42,4 @@ export const WeatherBackground: React.FC<WeatherBackgroundProps> = ({ weather })
         </div>
     );
 };
+export default WeatherBackground;
