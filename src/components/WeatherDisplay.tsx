@@ -13,12 +13,12 @@ import type { WeatherData } from "../types/WeatherForcastType";
 
 interface WeatherProps {
     weatherData: WeatherData;
-    handleDaySelect: (day: number) => void;
+
 }
 
 const WeatherDisplay: React.FC<WeatherProps> = ({
     weatherData,
-    handleDaySelect,
+
 }) => {
     const {
         city,
@@ -32,29 +32,7 @@ const WeatherDisplay: React.FC<WeatherProps> = ({
         weatherDescription,
     } = weatherData;
 
-    // Funktion, um das passende Icon basierend auf dem Wetter auszuwählen
-    const getWeatherIcon2 = (condition: string) => {
 
-        switch (condition) {
-            case "Clear":
-                return <WiDaySunny size={40} title="Clear Sky" />;
-            case "Clouds":
-                return <WiCloudy size={40} title="Cloudy" />;
-            case "Rain":
-                return <WiRain size={40} title="Rainy" />;
-            case "light rain":
-                return <WiRain size={40} title="Rainy" />;
-            case "Thunderstorm":
-                return <WiThunderstorm size={40} title="Thunderstorm" />;
-            case "Snow":
-                return <WiSnow size={40} title="Snowy" />;
-            case "Mist":
-            case "Fog":
-                return <WiFog size={40} title="Foggy" />;
-            default:
-                return <div></div>;
-        }
-    };
 
     const getWeatherIcon = (condition: string) => {
         const normalizedCondition = condition.toLowerCase();
@@ -81,7 +59,6 @@ const WeatherDisplay: React.FC<WeatherProps> = ({
             return <WiStrongWind size={40} title="Windy" />;
         }
 
-        // Fallback für unbekannte Bedingungen
         return <div title="Unknown Condition">🌍</div>;
     };
 
@@ -94,7 +71,6 @@ const WeatherDisplay: React.FC<WeatherProps> = ({
                 <div className="d-flex justify-content-around align-items-center mb-4">
                     <div className="text-center">
                         <div>{getWeatherIcon(weatherDescription)}</div>
-                        <p className="mt-2">{weatherDescription}</p>
                     </div>
                     <div className="text-center">
                         <h4>{tempMin.toFixed(1)}°C - {tempMax.toFixed(1)}°C</h4>
