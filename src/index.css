@@ -1,6 +1,9 @@
 body {
   background: rgba(224, 255, 255, 0.685);
 }
+.custom-bg {
+  background-color: #7293b463;
+}
 @media (min-width: 600px) {
 }
 @media (max-width: 600px) {
