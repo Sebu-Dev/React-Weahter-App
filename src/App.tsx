@@ -19,7 +19,7 @@ const App: React.FC = () => {
     setError("");
     try {
       const forecast = await getForecastData(location);
-      setWeather(forecast[0].forecasts[0]); // Nur die aktuelle Vorhersage
+      setWeather(forecast[0].forecasts[0]);
     } catch {
       setError("Failed to fetch weather data.");
     } finally {
@@ -58,10 +58,10 @@ const App: React.FC = () => {
   }, []);
 
   return (
-    <div className="d-flex justify-content-center" >
+    <div className="d-flex justify-content-center p-4 "  >
       {weather && <WeatherBackground weather={weather.weatherDescription} />}
       <div style={{ position: "relative", zIndex: 1 }}>
-        <div className="container mt-5">
+        <div className="container  card mb-4 shadow custom-bg ">
           <Header />
           <SearchBar
             inputCity={inputCity}

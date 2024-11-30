@@ -17,7 +17,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
 }) => {
     const [error, setError] = useState<string | null>(null);
 
-    // Standort ermitteln und Stadt setzen
+
     const handleLocationClick = async () => {
         try {
             const position = await new Promise<GeolocationPosition>((resolve, reject) => {
@@ -27,9 +27,9 @@ const SearchBar: React.FC<SearchBarProps> = ({
             const { latitude, longitude } = position.coords;
             const city = await getCityFromCoordinates(latitude, longitude);
             setInputCity(city);
-            setError(null); // Zurücksetzen eines möglichen Fehlers
+            setError(null);
         } catch (err) {
-            setError("Unable to fetch location. Please allow location access.");
+            alert("Unable to fetch location. Please allow location access.");
             console.error("Error fetching location:", err);
         }
     };

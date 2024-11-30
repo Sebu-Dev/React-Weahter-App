@@ -33,7 +33,7 @@ const WeatherDisplay: React.FC<WeatherProps> = ({
     } = weatherData;
 
     // Funktion, um das passende Icon basierend auf dem Wetter auszuwählen
-    const getWeatherIcon = (condition: string) => {
+    const getWeatherIcon2 = (condition: string) => {
 
         switch (condition) {
             case "Clear":
@@ -56,9 +56,38 @@ const WeatherDisplay: React.FC<WeatherProps> = ({
         }
     };
 
+    const getWeatherIcon = (condition: string) => {
+        const normalizedCondition = condition.toLowerCase();
+
+        if (normalizedCondition.includes("clear")) {
+            return <WiDaySunny size={40} title="Clear Sky" />;
+        }
+        if (normalizedCondition.includes("cloud")) {
+            return <WiCloudy size={40} title="Cloudy" />;
+        }
+        if (normalizedCondition.includes("rain")) {
+            return <WiRain size={40} title="Rainy" />;
+        }
+        if (normalizedCondition.includes("thunderstorm")) {
+            return <WiThunderstorm size={40} title="Thunderstorm" />;
+        }
+        if (normalizedCondition.includes("snow")) {
+            return <WiSnow size={40} title="Snowy" />;
+        }
+        if (normalizedCondition.includes("mist") || normalizedCondition.includes("fog")) {
+            return <WiFog size={40} title="Foggy" />;
+        }
+        if (normalizedCondition.includes("wind")) {
+            return <WiStrongWind size={40} title="Windy" />;
+        }
+
+        // Fallback für unbekannte Bedingungen
+        return <div title="Unknown Condition">🌍</div>;
+    };
+
     return (
 
-        <div className="card mb-4 shadow " style={{ maxWidth: '500px' }}>
+        <div className="card mb-4 shadow  " style={{ maxWidth: '500px' }}>
             <div className="card-body">
                 <h2 className="text-center mb-3">{city}</h2>
                 <p className="text-center text-muted">{time}</p>
