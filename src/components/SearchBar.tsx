@@ -4,10 +4,10 @@ interface SearchBarProps {
     inputCity: string;
     setInputCity: React.Dispatch<React.SetStateAction<string>>;
     handleSearch: () => void;
-    handleLocationButton: (fromButton: boolean) => void;
+    handleLocationButton: () => Promise<void>;
 }
 
-const SearchBar: React.FC<SearchBarProps> = ({inputCity,setInputCity,handleSearch, handleLocationButton}) => {
+const SearchBar: React.FC<SearchBarProps> = ({ inputCity, setInputCity, handleSearch, handleLocationButton }) => {
 
     return (
         <div className="d-flex justify-content-center mb-4 search-bar">
@@ -31,7 +31,7 @@ const SearchBar: React.FC<SearchBarProps> = ({inputCity,setInputCity,handleSearc
             <button
                 type="button"
                 className="btn btn-light ms-2"
-                onClick={()=>handleLocationButton(true)}
+                onClick={() => handleLocationButton().catch(() => alert("Unable to fetch location. Please allow your location access."))}
                 title="Use my location"
             >
                 <FaLocationArrow size={20} />

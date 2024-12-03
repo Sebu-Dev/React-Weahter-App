@@ -42,10 +42,7 @@ const App: React.FC = () => {
     }
   };
 
-  const fetchUserLocation = async (fromButton: boolean = false) => {
-    if (fromButton) {
-      setError("");
-    }
+  const fetchUserLocation = async () => {
     try {
       const coordinates: Coordinates = await new Promise<Coordinates>(
         (resolve, reject) => {
@@ -62,18 +59,14 @@ const App: React.FC = () => {
 
       const userCity = await getCityFromCoordinates(coordinates);
       setCity(userCity);
-    } catch (err) {
-      if (fromButton) {
-        alert("Unable to fetch location. Please allow your location access.");
-      }
-      console.warn(err instanceof Error ? err.message : "Could not determine user location.");
-    } finally {
+    }
+    finally {
       setLocationFetched(true);
     }
   };
 
   useEffect(() => {
-    fetchUserLocation();
+    fetchUserLocation().catch((err) => console.warn(err instanceof Error ? err.message : "Could not determine user location."));
   }, []);
 
   useEffect(() => {
